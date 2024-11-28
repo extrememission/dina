@@ -33,7 +33,7 @@
 
         .car {
             position: absolute;
-            width: 50px; /* Adjust size of the car */
+            width: 300px; /* Adjust size of the car */
             height: auto; /* Maintain aspect ratio */
             top: 50%; /* Start in the middle vertically */
             left: 20%; /* Start position horizontally */
@@ -50,9 +50,13 @@
 
     // Function to move the car based on mouse or touch position
     function moveCar(event) {
-        const y = event.clientY || event.touches[0].clientY; // Get Y position
-        car.style.top = `${y - (car.offsetHeight / 2)}px`; // Center the car on the cursor/touch
-    }
+    const y = event.clientY || event.touches[0].clientY; // Get Y position
+    const x = event.clientX || event.touches[0].clientX; // Get X position
+
+    // Center the car on the cursor/touch
+    car.style.top = `${y - (car.offsetHeight / 2)}px`; // Center vertically
+    car.style.left = `${x - (car.offsetWidth / 2)}px`; // Center horizontally
+}
 
     // Event listeners for mouse and touch movements
     window.addEventListener('mousemove', moveCar);
