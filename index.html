@@ -3,24 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dina You're Late!</title>
+    <title>Dina Loves Ever</title>
     <style>
         body, html {
             margin: 0;
             padding: 0;
-            overflow: hidden;
-            position: relative;
+            overflow: hidden; /* Prevent scrolling */
         }
 
         .background {
             position: fixed;
             top: 0;
             left: 0;
-            width: 200%;
-            height: 100vh;
-            background-image: url('Mountains.png');
-            background-repeat: repeat-x;
-            animation: scroll 10s linear infinite;
+            width: 200%; /* Make it wide enough to loop */
+            height: 100vh; /* Full height */
+            background-image: url('Mountains.png'); /* Replace with your background image */
+            background-repeat: repeat-x; /* Repeat horizontally */
+            animation: scroll 10s linear infinite; /* Adjust speed here */
         }
 
         @keyframes scroll {
@@ -28,100 +27,71 @@
                 background-position: 0 0;
             }
             to {
-                background-position: -100% 0;
+                background-position: -100% 0; /* Scroll left */
             }
         }
 
         .car {
             position: absolute;
-            width: 300px;
-            height: auto;
-            top: 50%;
-            left: 20%;
-            transition: transform 0.1s ease-in-out; /* Smooth tilt transitions */
+            width: 300px; /* Adjust size of the car */
+            height: auto; /* Maintain aspect ratio */
+            top: 50%; /* Start in the middle vertically */
+            left: 20%; /* Start position horizontally */
         }
 
         #message {
             position: absolute;
-            color: white;
-            font-size: 24px;
-        }
-
-        .snowflake {
-            position: absolute;
-            top: -10%;
-            width: 30px; /* Adjust size as needed */
-            height: auto; /* Maintain aspect ratio */
-            opacity: 0.8; /* Slight transparency */
-        }
-
-        @keyframes fall {
-            to {
-                transform: translateY(100vh);
-                opacity: 0; /* Fade out as it falls */
-            }
+            color: white; /* Text color */
+            font-size: 24px; /* Font size */
         }
     </style>
 </head>
 <body>
 
 <div class="background"></div>
-<img src="dina.png" alt="Car" class="car" id="car"> <!-- Make sure the image exists -->
+<img src="dina.png" alt="Car" class="car" id="car"> <!-- Replace with your car image -->
 <div id="message">Happy Thanksgiving!</div>
 
 <script>
     const car = document.getElementById('car');
-    const message = document.getElementById('message');
+    const message = document.getElementById('message'); // Reference to the message element
 
     function shudderCar() {
-        const shakeAmount = 2;
-        const randomX = (Math.random() * shakeAmount - shakeAmount / 2);
-        car.style.transform = `translateX(${randomX}px)`;
+        const shakeAmount = 2; // Amount of shake
+        const randomX = (Math.random() * shakeAmount - shakeAmount / 2); // Random shake value
+        car.style.transform = `translateX(${randomX}px)`; // Apply shake effect
     }
-
+    
+    // Call the shudderCar function every 50 milliseconds
     setInterval(shudderCar, 50);
-
-    let lastY = window.innerHeight / 2;
+    
+    let lastY = window.innerHeight / 2; // Initial Y position of the car
 
     function moveCar(event) {
-        const y = event.clientY || event.touches[0].clientY;
-        const x = event.clientX || event.touches[0].clientX;
+        const y = event.clientY || event.touches[0].clientY; // Get Y position
+        const x = event.clientX || event.touches[0].clientX; // Get X position
 
-        car.style.top = `${y - (car.offsetHeight / 2)}px`;
-        car.style.left = `${x - (car.offsetWidth / 2)}px`;
+        // Center the car on the cursor/touch
+        car.style.top = `${y - (car.offsetHeight / 2)}px`; // Center vertically
+        car.style.left = `${x - (car.offsetWidth / 2)}px`; // Center horizontally
 
-        message.style.top = `${y - (car.offsetHeight / 2) - 30}px`;
-        message.style.left = `${x - (message.offsetWidth / 2)}px`;
+        // Update message position to follow the car
+        message.style.top = `${y - (car.offsetHeight / 2) - 30}px`; // Position above the car
+        message.style.left = `${x - (message.offsetWidth / 2)}px`; // Center horizontally with respect to the car
 
+        // Tilt effect based on vertical movement
         if (y < lastY) {
-            car.style.transform += ` rotate(-5deg)`;
+            // Moving up
+            car.style.transform += ` rotate(-5deg)`; // Tilt front up
         } else if (y > lastY) {
-            car.style.transform += ` rotate(5deg)`;
+            // Moving down
+            car.style.transform += ` rotate(5deg)`; // Tilt front down
         }
 
-        lastY = y;
+        lastY = y; // Update last Y position
     }
 
-    function createSnowflake() {
-        const snowflake = document.createElement('img'); // Use 'img' instead of 'div'
-        snowflake.src = 'snowflake.png'; // Your snowflake image path
-        snowflake.className = 'snowflake';
-
-        const randomX = Math.random() * window.innerWidth;
-        snowflake.style.left = `${randomX}px`;
-
-        document.body.appendChild(snowflake);
-
-        const duration = Math.random() * 3 + 2; // Random duration between 2s and 5s
-        snowflake.style.animation = `fall ${duration}s linear forwards`;
-
-        setTimeout(() => {
-            snowflake.remove();
-        }, duration * 1000);
-    }
-
-    setInterval(createSnowflake, 300); // Create a new snowflake every 300 milliseconds
-
+    // Event listeners for mouse and touch movements
     window.addEventListener('mousemove', moveCar);
     window.addEventListener('touchmove', moveCar);
 </script>
