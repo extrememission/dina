@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scrolling Background with Car</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            overflow: hidden; /* Prevent scrolling */
+        }
+
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 200%; /* Make it wide enough to loop */
+            height: 100vh; /* Full height */
+            background-image: url('path/to/your/background-image.jpg'); /* Replace with your background image */
+            background-repeat: repeat-x; /* Repeat horizontally */
+            animation: scroll 10s linear infinite; /* Adjust speed here */
+        }
+
+        @keyframes scroll {
+            from {
+                background-position: 0 0;
+            }
+            to {
+                background-position: -100% 0; /* Scroll left */
+            }
+        }
+
+        .car {
+            position: absolute;
+            width: 50px; /* Adjust size of the car */
+            height: auto; /* Maintain aspect ratio */
+            top: 50%; /* Start in the middle vertically */
+            left: 20%; /* Start position horizontally */
+        }
+    </style>
+</head>
+<body>
+
+<div class="background"></div>
+<img src="path/to/your/car-image.png" alt="Car" class="car" id="car"> <!-- Replace with your car image -->
+
+<script>
+    const car = document.getElementById('car');
+
+    // Function to move the car based on mouse or touch position
+    function moveCar(event) {
+        const y = event.clientY || event.touches[0].clientY; // Get Y position
+        car.style.top = `${y - (car.offsetHeight / 2)}px`; // Center the car on the cursor/touch
+    }
+
+    // Event listeners for mouse and touch movements
+    window.addEventListener('mousemove', moveCar);
+    window.addEventListener('touchmove', moveCar);
+</script>
+
+</body>
+</html>
