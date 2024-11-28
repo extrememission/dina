@@ -48,6 +48,14 @@
 <script>
     const car = document.getElementById('car');
 
+    function shudderCar() {
+    const shakeAmount = 2; // Amount of shake
+    const randomX = (Math.random() * shakeAmount - shakeAmount / 2); // Random shake value
+    car.style.transform = `translateX(${randomX}px)`; // Apply shake effect
+}
+// Call the shudderCar function every 50 milliseconds
+setInterval(shudderCar, 50);
+    
 let lastY = window.innerHeight / 2; // Initial Y position of the car
 
 function moveCar(event) {
