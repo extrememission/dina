@@ -45,7 +45,7 @@
             font-size: 24px; /* Font size */
         }
 
-        /* Snowstorm effect */
+        /* Snowflakes container */
         .snowflakes {
             position: fixed;
             top: 0;
@@ -58,31 +58,11 @@
 
         .snowflake {
             position: absolute;
-            top: -10px; /* Start above the screen */
             background-color: #fff;
             border-radius: 50%;
             opacity: 0.8;
-            animation: fall 10s linear infinite, drift 5s ease-in-out infinite;
+            /* No animation here, we will control movement with JS */
         }
-
-        @keyframes fall {
-            to {
-                transform: translateY(100vh); /* Snowflake falls down the screen */
-            }
-        }
-
-        @keyframes drift {
-            0% {
-                transform: translateX(0);
-            }
-            50% {
-                transform: translateX(10px); /* Drift to the right */
-            }
-            100% {
-                transform: translateX(-10px); /* Drift to the left */
-            }
-        }
-
     </style>
 </head>
 <body>
@@ -95,6 +75,68 @@
 <div class="snowflakes"></div>
 
 <script>
+    const snowflakesContainer = document.querySelector('.snowflakes');
+    const numberOfSnowflakes = 100; // Adjust number of snowflakes
+    const snowflakes = [];
+
+    // Create snowflakes
+    function createSnowflakes() {
+        for (let i = 0; i < numberOfSnowflakes; i++) {
+            const snowflake = document.createElement('div');
+            snowflake.classList.add('snowflake');
+            const size = Math.random() * 10 + 5; // Random size between 5px and 15px
+            const positionX = Math.random() * window.innerWidth; // Random horizontal position
+            const speed = Math.random() * 3 + 2; // Random speed for falling
+            const drift = Math.random() * 2 - 1; // Drift speed (left-right)
+            
+            snowflake.style.width = `${size}px`;
+            snowflake.style.height = `${size}px`;
+            snowflake.style.left = `${positionX}px`;
+            snowflake.style.top = `-${size}px`; // Start above the screen
+
+            snowflakesContainer.appendChild(snowflake);
+
+            // Store snowflake data for later use in animation
+            snowflakes.push({
+                element: snowflake,
+                x: positionX,
+                y: -size, // Start just above the screen
+                speed: speed,
+                drift: drift,
+                size: size
+            });
+        }
+    }
+
+    // Animate snowflakes
+    function animateSnowflakes() {
+        snowflakes.forEach(snowflake => {
+            // Move snowflake down
+            snowflake.y += snowflake.speed;
+
+            // Move snowflake left and right (drift)
+            snowflake.x += snowflake.drift;
+
+            // Reset position when snowflake reaches the bottom
+            if (snowflake.y > window.innerHeight) {
+                snowflake.y = -snowflake.size; // Reset to top
+                snowflake.x = Math.random() * window.innerWidth; // Randomize horizontal position
+            }
+
+            // Apply new position to snowflake
+            snowflake.element.style.top = `${snowflake.y}px`;
+            snowflake.element.style.left = `${snowflake.x}px`;
+        });
+
+        // Request next animation frame
+        requestAnimationFrame(animateSnowflakes);
+    }
+
+    // Initialize snowflakes
+    createSnowflakes();
+    animateSnowflakes();
+
+    // Shudder effect for the car (same as before)
     const car = document.getElementById('car');
     const message = document.getElementById('message'); // Reference to the message element
 
@@ -137,31 +179,6 @@
     window.addEventListener('mousemove', moveCar);
     window.addEventListener('touchmove', moveCar);
 
-    // Function to create snowflakes
-    function createSnowflakes() {
-        const snowflakesContainer = document.querySelector('.snowflakes');
-        const numberOfSnowflakes = 100; // Adjust number of snowflakes
-
-        for (let i = 0; i < numberOfSnowflakes; i++) {
-            const snowflake = document.createElement('div');
-            snowflake.classList.add('snowflake');
-            const size = Math.random() * 10 + 5; // Random size between 5px and 15px
-            const positionX = Math.random() * 100; // Random horizontal position (percentage)
-            const duration = Math.random() * 5 + 5; // Random duration for fall (5 to 10 seconds)
-
-            snowflake.style.width = `${size}px`;
-            snowflake.style.height = `${size}px`;
-            snowflake.style.left = `${positionX}%`;
-            snowflake.style.animationDuration = `${duration}s`; // Random fall time
-            snowflake.style.animationTimingFunction = 'linear'; // Smooth fall
-            snowflake.style.animationIterationCount = 'infinite'; // Keep falling indefinitely
-
-            snowflakesContainer.appendChild(snowflake);
-        }
-    }
-
-    // Create snowflakes when page loads
-    window.onload = createSnowflakes;
 </script>
 
 </body>
