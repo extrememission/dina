@@ -53,7 +53,7 @@
             width: 100%;
             height: 100%;
             pointer-events: none; /* Make snowflakes non-interactive */
-            z-index: 2; /* Make sure the snow is above other content */
+            z-index: 2; /* Ensure the snow is above the background */
         }
 
         .snowflake {
@@ -67,7 +67,7 @@
 
         @keyframes fall {
             to {
-                transform: translateY(100vh);
+                transform: translateY(100vh); /* Snowflake falls down the screen */
             }
         }
 
@@ -76,10 +76,10 @@
                 transform: translateX(0);
             }
             50% {
-                transform: translateX(10px);
+                transform: translateX(10px); /* Drift to the right */
             }
             100% {
-                transform: translateX(-10px);
+                transform: translateX(-10px); /* Drift to the left */
             }
         }
 
@@ -92,9 +92,7 @@
 <div id="message">Happy Thanksgiving!</div>
 
 <!-- Snowflakes container -->
-<div class="snowflakes">
-    <!-- JavaScript will generate snowflakes here -->
-</div>
+<div class="snowflakes"></div>
 
 <script>
     const car = document.getElementById('car');
