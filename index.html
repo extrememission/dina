@@ -9,6 +9,7 @@
             margin: 0;
             padding: 0;
             overflow: hidden; /* Prevent scrolling */
+            position: relative; /* Allow absolute positioning of snow */
         }
 
         .background {
@@ -43,6 +44,21 @@
             position: absolute;
             color: white; /* Text color */
             font-size: 24px; /* Font size */
+        }
+
+        .snowflake {
+            position: absolute;
+            top: -10%; /* Start above the viewport */
+            width: 30px; /* Size of the snowflake */
+            height: auto;
+            opacity: 0.8; /* Slight transparency */
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(100vh); /* Fall to the bottom of the viewport */
+                opacity: 0; /* Fade out as it falls */
+            }
         }
     </style>
 </head>
@@ -90,6 +106,30 @@
 
         lastY = y; // Update last Y position
     }
+
+    // Function to create and animate snowflakes
+    function createSnowflake() {
+        const snowflake = document.createElement('img');
+        snowflake.src = 'snowflake.png'; // Replace with your snowflake image path
+        snowflake.className = 'snowflake';
+        
+        // Randomize starting position and animation duration
+        const randomX = Math.random() * window.innerWidth;
+        snowflake.style.left = `${randomX}px`;
+        
+        document.body.appendChild(snowflake);
+
+        const duration = Math.random() * 3 + 2; // Random duration between 2s and 5s
+        snowflake.style.animation = `fall ${duration}s linear forwards`;
+
+        // Remove the snowflake after it falls
+        setTimeout(() => {
+            snowflake.remove();
+        }, duration * 1000);
+    }
+
+    // Create a new snowflake every 300 milliseconds
+    setInterval(createSnowflake, 300);
 
     // Event listeners for mouse and touch movements
     window.addEventListener('mousemove', moveCar);
