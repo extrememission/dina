@@ -38,53 +38,62 @@
             top: 50%; /* Start in the middle vertically */
             left: 20%; /* Start position horizontally */
         }
+
+        #message {
+            position: absolute;
+            color: white; /* Text color */
+            font-size: 24px; /* Font size */
+        }
     </style>
 </head>
 <body>
 
 <div class="background"></div>
 <img src="dina.png" alt="Car" class="car" id="car"> <!-- Replace with your car image -->
+<div id="message">Happy Thanksgiving!</div>
 
 <script>
     const car = document.getElementById('car');
+    const message = document.getElementById('message'); // Reference to the message element
 
     function shudderCar() {
-    const shakeAmount = 2; // Amount of shake
-    const randomX = (Math.random() * shakeAmount - shakeAmount / 2); // Random shake value
-    car.style.transform = `translateX(${randomX}px)`; // Apply shake effect
-}
-// Call the shudderCar function every 50 milliseconds
-setInterval(shudderCar, 50);
+        const shakeAmount = 2; // Amount of shake
+        const randomX = (Math.random() * shakeAmount - shakeAmount / 2); // Random shake value
+        car.style.transform = `translateX(${randomX}px)`; // Apply shake effect
+    }
     
-let lastY = window.innerHeight / 2; // Initial Y position of the car
+    // Call the shudderCar function every 50 milliseconds
+    setInterval(shudderCar, 50);
+    
+    let lastY = window.innerHeight / 2; // Initial Y position of the car
 
-function moveCar(event) {
-    const y = event.clientY || event.touches[0].clientY; // Get Y position
-    const x = event.clientX || event.touches[0].clientX; // Get X position
+    function moveCar(event) {
+        const y = event.clientY || event.touches[0].clientY; // Get Y position
+        const x = event.clientX || event.touches[0].clientX; // Get X position
 
-    // Center the car on the cursor/touch
-    car.style.top = `${y - (car.offsetHeight / 2)}px`; // Center vertically
-    car.style.left = `${x - (car.offsetWidth / 2)}px`; // Center horizontally
+        // Center the car on the cursor/touch
+        car.style.top = `${y - (car.offsetHeight / 2)}px`; // Center vertically
+        car.style.left = `${x - (car.offsetWidth / 2)}px`; // Center horizontally
 
-    // Shake effect
-    const shakeAmount = 2; // Amount of shake
-    car.style.transform = `translateX(${(Math.random() * shakeAmount - shakeAmount / 2)}px)`;
+        // Update message position to follow the car
+        message.style.top = `${y - (car.offsetHeight / 2) - 30}px`; // Position above the car
+        message.style.left = `${x - (message.offsetWidth / 2)}px`; // Center horizontally with respect to the car
 
-    // Tilt effect based on vertical movement
-    if (y < lastY) {
-        // Moving up
-        car.style.transform += ` rotate(-5deg)`; // Tilt front up
-    } else if (y > lastY) {
-        // Moving down
-        car.style.transform += ` rotate(5deg)`; // Tilt front down
+        // Tilt effect based on vertical movement
+        if (y < lastY) {
+            // Moving up
+            car.style.transform += ` rotate(-5deg)`; // Tilt front up
+        } else if (y > lastY) {
+            // Moving down
+            car.style.transform += ` rotate(5deg)`; // Tilt front down
+        }
+
+        lastY = y; // Update last Y position
     }
 
-    lastY = y; // Update last Y position
-}
-
-// Event listeners for mouse and touch movements
-window.addEventListener('mousemove', moveCar);
-window.addEventListener('touchmove', moveCar);
+    // Event listeners for mouse and touch movements
+    window.addEventListener('mousemove', moveCar);
+    window.addEventListener('touchmove', moveCar);
 </script>
 
 </body>
