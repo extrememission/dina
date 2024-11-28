@@ -50,21 +50,17 @@
         .snowflake {
             position: absolute;
             top: -10%;
-            width: 30px;
-            height: 30px; /* Change to a visible size for debugging */
-            background-color: white; /* Fallback color */
-            opacity: 0.8;
-            border-radius: 50%; /* Circle shape for snowflake */
-            animation: fall 5s linear forwards;
+            width: 30px; /* Adjust size as needed */
+            height: auto; /* Maintain aspect ratio */
+            opacity: 0.8; /* Slight transparency */
         }
 
         @keyframes fall {
             to {
                 transform: translateY(100vh);
-                opacity: 0;
+                opacity: 0; /* Fade out as it falls */
             }
         }
-
     </style>
 </head>
 <body>
@@ -107,7 +103,8 @@
     }
 
     function createSnowflake() {
-        const snowflake = document.createElement('div'); // Changed to 'div' for debugging
+        const snowflake = document.createElement('img'); // Use 'img' instead of 'div'
+        snowflake.src = 'snowflake.png'; // Your snowflake image path
         snowflake.className = 'snowflake';
 
         const randomX = Math.random() * window.innerWidth;
@@ -115,7 +112,7 @@
 
         document.body.appendChild(snowflake);
 
-        const duration = Math.random() * 3 + 2;
+        const duration = Math.random() * 3 + 2; // Random duration between 2s and 5s
         snowflake.style.animation = `fall ${duration}s linear forwards`;
 
         setTimeout(() => {
@@ -123,11 +120,10 @@
         }, duration * 1000);
     }
 
-    setInterval(createSnowflake, 300);
+    setInterval(createSnowflake, 300); // Create a new snowflake every 300 milliseconds
 
     window.addEventListener('mousemove', moveCar);
     window.addEventListener('touchmove', moveCar);
-
 </script>
 
 </body>
