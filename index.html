@@ -48,19 +48,35 @@
 <script>
     const car = document.getElementById('car');
 
-    // Function to move the car based on mouse or touch position
-    function moveCar(event) {
+let lastY = window.innerHeight / 2; // Initial Y position of the car
+
+function moveCar(event) {
     const y = event.clientY || event.touches[0].clientY; // Get Y position
     const x = event.clientX || event.touches[0].clientX; // Get X position
 
     // Center the car on the cursor/touch
     car.style.top = `${y - (car.offsetHeight / 2)}px`; // Center vertically
     car.style.left = `${x - (car.offsetWidth / 2)}px`; // Center horizontally
+
+    // Shake effect
+    const shakeAmount = 2; // Amount of shake
+    car.style.transform = `translateX(${(Math.random() * shakeAmount - shakeAmount / 2)}px)`;
+
+    // Tilt effect based on vertical movement
+    if (y < lastY) {
+        // Moving up
+        car.style.transform += ` rotate(-5deg)`; // Tilt front up
+    } else if (y > lastY) {
+        // Moving down
+        car.style.transform += ` rotate(5deg)`; // Tilt front down
+    }
+
+    lastY = y; // Update last Y position
 }
 
-    // Event listeners for mouse and touch movements
-    window.addEventListener('mousemove', moveCar);
-    window.addEventListener('touchmove', moveCar);
+// Event listeners for mouse and touch movements
+window.addEventListener('mousemove', moveCar);
+window.addEventListener('touchmove', moveCar);
 </script>
 
 </body>
