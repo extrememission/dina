@@ -147,14 +147,14 @@
             snowflake.classList.add('snowflake');
             const size = Math.random() * 10 + 5; // Random size between 5px and 15px
             const positionX = Math.random() * 100; // Random horizontal position (percentage)
-            const delay = Math.random() * 10; // Random delay for animation
-            const duration = Math.random() * 10 + 5; // Random duration for fall
+            const duration = Math.random() * 5 + 5; // Random duration for fall (5 to 10 seconds)
 
             snowflake.style.width = `${size}px`;
             snowflake.style.height = `${size}px`;
             snowflake.style.left = `${positionX}%`;
-            snowflake.style.animationDuration = `${duration}s, ${duration + Math.random() * 5}s`; // Random fall time
-            snowflake.style.animationDelay = `${delay}s`; // Random delay
+            snowflake.style.animationDuration = `${duration}s`; // Random fall time
+            snowflake.style.animationTimingFunction = 'linear'; // Smooth fall
+            snowflake.style.animationIterationCount = 'infinite'; // Keep falling indefinitely
 
             snowflakesContainer.appendChild(snowflake);
         }
