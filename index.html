@@ -44,6 +44,45 @@
             color: white; /* Text color */
             font-size: 24px; /* Font size */
         }
+
+        /* Snowstorm effect */
+        .snowflakes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none; /* Make snowflakes non-interactive */
+            z-index: 2; /* Make sure the snow is above other content */
+        }
+
+        .snowflake {
+            position: absolute;
+            top: -10px;
+            background-color: #fff;
+            border-radius: 50%;
+            opacity: 0.8;
+            animation: fall 10s linear infinite, drift 5s linear infinite;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(100vh);
+            }
+        }
+
+        @keyframes drift {
+            0% {
+                transform: translateX(0);
+            }
+            50% {
+                transform: translateX(10px);
+            }
+            100% {
+                transform: translateX(-10px);
+            }
+        }
+
     </style>
 </head>
 <body>
@@ -51,6 +90,11 @@
 <div class="background"></div>
 <img src="dina.png" alt="Car" class="car" id="car"> <!-- Replace with your car image -->
 <div id="message">Happy Thanksgiving!</div>
+
+<!-- Snowflakes container -->
+<div class="snowflakes">
+    <!-- JavaScript will generate snowflakes here -->
+</div>
 
 <script>
     const car = document.getElementById('car');
@@ -61,10 +105,10 @@
         const randomX = (Math.random() * shakeAmount - shakeAmount / 2); // Random shake value
         car.style.transform = `translateX(${randomX}px)`; // Apply shake effect
     }
-    
+
     // Call the shudderCar function every 50 milliseconds
     setInterval(shudderCar, 50);
-    
+
     let lastY = window.innerHeight / 2; // Initial Y position of the car
 
     function moveCar(event) {
@@ -94,6 +138,32 @@
     // Event listeners for mouse and touch movements
     window.addEventListener('mousemove', moveCar);
     window.addEventListener('touchmove', moveCar);
+
+    // Function to create snowflakes
+    function createSnowflakes() {
+        const snowflakesContainer = document.querySelector('.snowflakes');
+        const numberOfSnowflakes = 100; // Adjust number of snowflakes
+
+        for (let i = 0; i < numberOfSnowflakes; i++) {
+            const snowflake = document.createElement('div');
+            snowflake.classList.add('snowflake');
+            const size = Math.random() * 10 + 5; // Random size between 5px and 15px
+            const positionX = Math.random() * 100; // Random horizontal position (percentage)
+            const delay = Math.random() * 10; // Random delay for animation
+            const duration = Math.random() * 5 + 5; // Random duration for fall
+
+            snowflake.style.width = `${size}px`;
+            snowflake.style.height = `${size}px`;
+            snowflake.style.left = `${positionX}%`;
+            snowflake.style.animationDuration = `${duration}s, ${duration + Math.random() * 5}s`; // Random fall time
+            snowflake.style.animationDelay = `${delay}s`; // Random delay
+
+            snowflakesContainer.appendChild(snowflake);
+        }
+    }
+
+    // Create snowflakes when page loads
+    window.onload = createSnowflakes;
 </script>
 
 </body>
