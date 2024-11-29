@@ -4,63 +4,66 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MERRY CHRISTMAS EVER!</title>
-    <style>
-        body, html {
-            margin: 0;
-            padding: 0;
-            overflow: hidden; /* Prevent scrolling */
-        }
+<style>
+    body, html {
+        margin: 0;
+        padding: 0;
+        overflow: hidden; /* Prevent scrolling */
+    }
 
-        .background {
-            position: fixed;
-            top: 0;
-            left: 0;
-            height: 100vh;
-            background-image: url('Mountains.png'); /* Background image */
-            background-repeat: repeat-x;
-            animation: scroll 10s linear infinite; /* Background scroll animation */
-        }
+    .background {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%; /* Ensure the background takes full width */
+        height: 100vh; /* Full viewport height */
+        background-image: url('Mountains.png'); /* Background image */
+        background-repeat: repeat-x; /* Repeat the image horizontally */
+        background-position: 0 0; /* Starting position for the scrolling effect */
+        animation: scroll 10s linear infinite; /* Background scrolling animation */
+    }
 
-        @keyframes scroll {
-            from {
-                background-position: 0 0;
-            }
-            to {
-                background-position: -100% 0;
-            }
+    @keyframes scroll {
+        0% {
+            background-position: 0 0; /* Start from the left */
         }
+        100% {
+            background-position: -100% 0; /* Scroll to the left completely */
+        }
+    }
 
-        .car {
-            position: absolute;
-            width: 300px;
-            height: auto;
-            top: 50%;
-            left: 20%;
-        }
+    .car {
+        position: absolute;
+        width: 300px;
+        height: auto;
+        top: 50%;
+        left: 20%;
+    }
 
-        #message {
-            position: absolute;
-            color: white;
-            font-size: 24px;
-        }
+    #message {
+        position: absolute;
+        color: white;
+        font-size: 24px;
+    }
 
-        .snowflakes {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 2;
-        }
+    .snowflakes {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 2;
+    }
 
-        .snowflake {
-            position: absolute;
-            background-color: #fff;
-            border-radius: 50%;
-            opacity: 0.8;
-        }
-    </style>
+    .snowflake {
+        position: absolute;
+        background-color: #fff;
+        border-radius: 50%;
+        opacity: 0.8;
+    }
+</style>
+
 </head>
 <body>
 
