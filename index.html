@@ -61,7 +61,6 @@
             background-color: #fff;
             border-radius: 50%;
             opacity: 0.8;
-            /* No animation here, we will control movement with JS */
         }
     </style>
 </head>
@@ -73,6 +72,12 @@
 
 <!-- Snowflakes container -->
 <div class="snowflakes"></div>
+
+<!-- Audio element for background music -->
+<audio id="backgroundMusic" loop>
+    <source src="jb.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+</audio>
 
 <script>
     const snowflakesContainer = document.querySelector('.snowflakes');
@@ -165,10 +170,8 @@
 
         // Tilt effect based on vertical movement
         if (y < lastY) {
-            // Moving up
             car.style.transform += ` rotate(-5deg)`; // Tilt front up
         } else if (y > lastY) {
-            // Moving down
             car.style.transform += ` rotate(5deg)`; // Tilt front down
         }
 
@@ -178,6 +181,14 @@
     // Event listeners for mouse and touch movements
     window.addEventListener('mousemove', moveCar);
     window.addEventListener('touchmove', moveCar);
+
+    // Play audio on load
+    window.addEventListener('load', function() {
+        var audio = document.getElementById('backgroundMusic');
+        audio.play().catch(function(error) {
+          console.log("Audio playback failed: " + error);
+        });
+    });
 
 </script>
 
