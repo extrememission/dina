@@ -15,10 +15,10 @@
             position: fixed;
             top: 0;
             left: 0;
-            height: 100vh; /* Full height */
-            background-image: url('Mountains.png'); /* Replace with your background image */
-            background-repeat: repeat-x; /* Repeat horizontally */
-            animation: scroll 10s linear infinite; /* Adjust speed here */
+            height: 100vh;
+            background-image: url('Mountains.png'); /* Background image */
+            background-repeat: repeat-x;
+            animation: scroll 10s linear infinite; /* Background scroll animation */
         }
 
         @keyframes scroll {
@@ -26,33 +26,32 @@
                 background-position: 0 0;
             }
             to {
-                background-position: -100% 0; /* Scroll left */
+                background-position: -100% 0;
             }
         }
 
         .car {
             position: absolute;
-            width: 300px; /* Adjust size of the car */
-            height: auto; /* Maintain aspect ratio */
-            top: 50%; /* Start in the middle vertically */
-            left: 20%; /* Start position horizontally */
+            width: 300px;
+            height: auto;
+            top: 50%;
+            left: 20%;
         }
 
         #message {
             position: absolute;
-            color: white; /* Text color */
-            font-size: 24px; /* Font size */
+            color: white;
+            font-size: 24px;
         }
 
-        /* Snowflakes container */
         .snowflakes {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            pointer-events: none; /* Make snowflakes non-interactive */
-            z-index: 2; /* Ensure snowflakes are above the background */
+            pointer-events: none;
+            z-index: 2;
         }
 
         .snowflake {
@@ -66,10 +65,8 @@
 <body>
 
 <div class="background"></div>
-<img src="dina.png" alt="Car" class="car" id="car"> <!-- Replace with your car image -->
+<img src="dina.png" alt="Car" class="car" id="car">
 <div id="message">Merry Christmas!</div>
-
-<!-- Snowflakes container -->
 <div class="snowflakes"></div>
 
 <!-- Audio element for background music -->
@@ -80,7 +77,7 @@
 
 <script>
     const snowflakesContainer = document.querySelector('.snowflakes');
-    const numberOfSnowflakes = 100; // Adjust number of snowflakes
+    const numberOfSnowflakes = 100;
     const snowflakes = [];
 
     // Create snowflakes
@@ -89,7 +86,7 @@
             const snowflake = document.createElement('div');
             snowflake.classList.add('snowflake');
             const size = Math.random() * 10 + 5; // Random size between 5px and 15px
-            const positionX = Math.random() * window.innerWidth; // Random horizontal position
+            const positionX = Math.random() * window.innerWidth;
             const speed = Math.random() * 3 + 2; // Random speed for falling
             const drift = Math.random() * 2 - 1; // Drift speed (left-right)
             
@@ -115,10 +112,7 @@
     // Animate snowflakes
     function animateSnowflakes() {
         snowflakes.forEach(snowflake => {
-            // Move snowflake down
             snowflake.y += snowflake.speed;
-
-            // Move snowflake left and right (drift)
             snowflake.x += snowflake.drift;
 
             // Reset position when snowflake reaches the bottom
@@ -127,7 +121,6 @@
                 snowflake.x = Math.random() * window.innerWidth; // Randomize horizontal position
             }
 
-            // Apply new position to snowflake
             snowflake.element.style.top = `${snowflake.y}px`;
             snowflake.element.style.left = `${snowflake.x}px`;
         });
@@ -140,54 +133,55 @@
     createSnowflakes();
     animateSnowflakes();
 
-    // Shudder effect for the car (same as before)
     const car = document.getElementById('car');
-    const message = document.getElementById('message'); // Reference to the message element
+    const message = document.getElementById('message');
+    let lastY = window.innerHeight / 2;
+    let musicStarted = false;  // Track if the music has started
 
     function shudderCar() {
-        const shakeAmount = 2; // Amount of shake
-        const randomX = (Math.random() * shakeAmount - shakeAmount / 2); // Random shake value
-        car.style.transform = `translateX(${randomX}px)`; // Apply shake effect
+        const shakeAmount = 2;
+        const randomX = (Math.random() * shakeAmount - shakeAmount / 2);
+        car.style.transform = `translateX(${randomX}px)`; // Shake effect
     }
 
-    // Call the shudderCar function every 50 milliseconds
-    setInterval(shudderCar, 50);
-
-    let lastY = window.innerHeight / 2; // Initial Y position of the car
+    setInterval(shudderCar, 50); // Shake the car every 50ms
 
     function moveCar(event) {
-        const y = event.clientY || event.touches[0].clientY; // Get Y position
-        const x = event.clientX || event.touches[0].clientX; // Get X position
-
-        // Center the car on the cursor/touch
-        car.style.top = `${y - (car.offsetHeight / 2)}px`; // Center vertically
-        car.style.left = `${x - (car.offsetWidth / 2)}px`; // Center horizontally
-
-        // Update message position to follow the car
-        message.style.top = `${y - (car.offsetHeight / 2) - 30}px`; // Position above the car
-        message.style.left = `${x - (message.offsetWidth / 2)}px`; // Center horizontally with respect to the car
-
-        // Tilt effect based on vertical movement
-        if (y < lastY) {
-            car.style.transform += ` rotate(-5deg)`; // Tilt front up
-        } else if (y > lastY) {
-            car.style.transform += ` rotate(5deg)`; // Tilt front down
+        if (!musicStarted) {
+            // Play music when the car is first moved by the user
+            const audio = document.getElementById('backgroundMusic');
+            audio.play().then(function() {
+                console.log("Music started");
+                musicStarted = true; // Mark music as started
+            }).catch(function(error) {
+                console.log("Audio playback failed: " + error);
+            });
         }
 
-        lastY = y; // Update last Y position
+        const y = event.clientY || event.touches[0].clientY;
+        const x = event.clientX || event.touches[0].clientX;
+        
+        // Move the car based on user input
+        car.style.top = `${y - (car.offsetHeight / 2)}px`; // Center the car vertically with the cursor
+        car.style.left = `${x - (car.offsetWidth / 2)}px`; // Center the car horizontally with the cursor
+
+        // Move the message along with the car
+        message.style.top = `${y - (car.offsetHeight / 2) - 30}px`;
+        message.style.left = `${x - (message.offsetWidth / 2)}px`;
+
+        // Tilt effect based on the vertical movement of the cursor
+        if (y < lastY) {
+            car.style.transform += ` rotate(-5deg)`; // Tilt the front up
+        } else if (y > lastY) {
+            car.style.transform += ` rotate(5deg)`; // Tilt the front down
+        }
+
+        lastY = y; // Update the last Y position
     }
 
     // Event listeners for mouse and touch movements
     window.addEventListener('mousemove', moveCar);
     window.addEventListener('touchmove', moveCar);
-
-    // Play audio on load
-    window.addEventListener('load', function() {
-        var audio = document.getElementById('backgroundMusic');
-        audio.play().catch(function(error) {
-          console.log("Audio playback failed: " + error);
-        });
-    });
 
 </script>
 
