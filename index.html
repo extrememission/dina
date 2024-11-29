@@ -4,72 +4,69 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MERRY CHRISTMAS EVER!</title>
-<style>
-    body, html {
-        margin: 0;
-        padding: 0;
-        overflow: hidden; /* Prevent scrolling */
-    }
-
-    .background {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%; /* Ensure the background takes full width */
-        height: 100vh; /* Full viewport height */
-        background-image: url('Mountains.png'); /* Background image */
-        background-repeat: repeat-x; /* Repeat the image horizontally */
-        background-position: 0 0; /* Starting position for the scrolling effect */
-        animation: scroll 10s linear infinite; /* Background scrolling animation */
-    }
-
-    @keyframes scroll {
-        0% {
-            background-position: 0 0; /* Start from the left */
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
         }
-        100% {
-            background-position: -100% 0; /* Scroll to the left completely */
+
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background-image: url('Mountains.png'); /* Background image */
+            background-repeat: repeat-x;
+            background-position: 0 0;
+            animation: scroll 10s linear infinite;
         }
-    }
 
-    .car {
-        position: absolute;
-        width: 300px;
-        height: auto;
-        top: 50%;
-        left: 20%;
-    }
+        @keyframes scroll {
+            0% { background-position: 0 0; }
+            100% { background-position: -100% 0; }
+        }
 
-    #message {
-        position: absolute;
-        color: white;
-        font-size: 24px;
-    }
+        .car {
+            position: absolute;
+            width: 300px;
+            height: auto;
+            top: 50%;
+            left: 20%;
+            cursor: pointer; /* Makes it clear the car is clickable */
+        }
 
-    .snowflakes {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        pointer-events: none;
-        z-index: 2;
-    }
+        #message {
+            position: absolute;
+            color: white;
+            font-size: 24px;
+        }
 
-    .snowflake {
-        position: absolute;
-        background-color: #fff;
-        border-radius: 50%;
-        opacity: 0.8;
-    }
-</style>
+        .snowflakes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 2;
+        }
 
+        .snowflake {
+            position: absolute;
+            background-color: #fff;
+            border-radius: 50%;
+            opacity: 0.8;
+        }
+    </style>
 </head>
 <body>
 
 <div class="background"></div>
-<img src="dina.png" alt="Car" class="car" id="car">
+<img src="dina.png" alt="Car" class="car" id="car"> <!-- Car image -->
 <div id="message">Merry Christmas!</div>
+
 <div class="snowflakes"></div>
 
 <!-- Audio element for background music -->
@@ -88,23 +85,22 @@
         for (let i = 0; i < numberOfSnowflakes; i++) {
             const snowflake = document.createElement('div');
             snowflake.classList.add('snowflake');
-            const size = Math.random() * 10 + 5; // Random size between 5px and 15px
+            const size = Math.random() * 10 + 5;
             const positionX = Math.random() * window.innerWidth;
-            const speed = Math.random() * 3 + 2; // Random speed for falling
-            const drift = Math.random() * 2 - 1; // Drift speed (left-right)
+            const speed = Math.random() * 3 + 2;
+            const drift = Math.random() * 2 - 1;
             
             snowflake.style.width = `${size}px`;
             snowflake.style.height = `${size}px`;
             snowflake.style.left = `${positionX}px`;
-            snowflake.style.top = `-${size}px`; // Start above the screen
+            snowflake.style.top = `-${size}px`;
 
             snowflakesContainer.appendChild(snowflake);
 
-            // Store snowflake data for later use in animation
             snowflakes.push({
                 element: snowflake,
                 x: positionX,
-                y: -size, // Start just above the screen
+                y: -size,
                 speed: speed,
                 drift: drift,
                 size: size
@@ -118,73 +114,74 @@
             snowflake.y += snowflake.speed;
             snowflake.x += snowflake.drift;
 
-            // Reset position when snowflake reaches the bottom
             if (snowflake.y > window.innerHeight) {
-                snowflake.y = -snowflake.size; // Reset to top
-                snowflake.x = Math.random() * window.innerWidth; // Randomize horizontal position
+                snowflake.y = -snowflake.size;
+                snowflake.x = Math.random() * window.innerWidth;
             }
 
             snowflake.element.style.top = `${snowflake.y}px`;
             snowflake.element.style.left = `${snowflake.x}px`;
         });
 
-        // Request next animation frame
         requestAnimationFrame(animateSnowflakes);
     }
 
-    // Initialize snowflakes
     createSnowflakes();
     animateSnowflakes();
 
     const car = document.getElementById('car');
     const message = document.getElementById('message');
     let lastY = window.innerHeight / 2;
-    let musicStarted = false;  // Track if the music has started
+    let musicStarted = false;
 
     function shudderCar() {
         const shakeAmount = 2;
         const randomX = (Math.random() * shakeAmount - shakeAmount / 2);
-        car.style.transform = `translateX(${randomX}px)`; // Shake effect
+        car.style.transform = `translateX(${randomX}px)`;
     }
 
-    setInterval(shudderCar, 50); // Shake the car every 50ms
+    setInterval(shudderCar, 50);
 
     function moveCar(event) {
+        const y = event.clientY || event.touches[0].clientY;
+        const x = event.clientX || event.touches[0].clientX;
+
+        car.style.top = `${y - (car.offsetHeight / 2)}px`;
+        car.style.left = `${x - (car.offsetWidth / 2)}px`;
+
+        message.style.top = `${y - (car.offsetHeight / 2) - 30}px`;
+        message.style.left = `${x - (message.offsetWidth / 2)}px`;
+    }
+
+    window.addEventListener('mousemove', moveCar);
+    window.addEventListener('touchmove', moveCar);
+
+    // Play music when the user is touching or pressing on the car
+    function playMusic() {
         if (!musicStarted) {
-            // Play music when the car is first moved by the user
             const audio = document.getElementById('backgroundMusic');
             audio.play().then(function() {
                 console.log("Music started");
-                musicStarted = true; // Mark music as started
+                musicStarted = true;
             }).catch(function(error) {
                 console.log("Audio playback failed: " + error);
             });
         }
-
-        const y = event.clientY || event.touches[0].clientY;
-        const x = event.clientX || event.touches[0].clientX;
-        
-        // Move the car based on user input
-        car.style.top = `${y - (car.offsetHeight / 2)}px`; // Center the car vertically with the cursor
-        car.style.left = `${x - (car.offsetWidth / 2)}px`; // Center the car horizontally with the cursor
-
-        // Move the message along with the car
-        message.style.top = `${y - (car.offsetHeight / 2) - 30}px`;
-        message.style.left = `${x - (message.offsetWidth / 2)}px`;
-
-        // Tilt effect based on the vertical movement of the cursor
-        if (y < lastY) {
-            car.style.transform += ` rotate(-5deg)`; // Tilt the front up
-        } else if (y > lastY) {
-            car.style.transform += ` rotate(5deg)`; // Tilt the front down
-        }
-
-        lastY = y; // Update the last Y position
     }
 
-    // Event listeners for mouse and touch movements
-    window.addEventListener('mousemove', moveCar);
-    window.addEventListener('touchmove', moveCar);
+    // Use both 'touchstart' and 'mousedown' events to detect when user touches or clicks the car
+    car.addEventListener('touchstart', playMusic);  // Mobile touch
+    car.addEventListener('mousedown', playMusic);   // Desktop mouse click
+
+    // Disable right-click context menu on the car image to prevent saving the image
+    car.addEventListener('contextmenu', function(event) {
+        event.preventDefault(); // Prevent the right-click menu from appearing
+    });
+
+    // Disable image saving for mobile long press
+    car.addEventListener('touchend', function(event) {
+        event.preventDefault(); // Prevent touch long-press actions
+    });
 
 </script>
 
